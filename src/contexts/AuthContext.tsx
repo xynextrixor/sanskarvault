@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { supabase } from '../lib/supabase';
 import type { User, Session } from '@supabase/supabase-js';
+import { pullFromSupabase } from '../lib/sync';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -23,6 +24,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const { data: { session } } = await supabase.auth.getSession();
         setIsAuthenticated(!!session);
         setUser(session?.user ?? null);
+        if (session?.user) {
+           const pulled = await pullFromSupabase();
+           if (pulled) window.dispatchEvent(new Event('storage'));
+        }
       } catch (error) {
         setIsAuthenticated(false);
         setUser(null);
@@ -58,11 +63,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (error) {
       throw new Error(error.message);
     }
+    
+    await pullFromSupabase();
   };
 
   const logout = async () => {
     try {
       await supabase.auth.signOut();
+      
+      // Clear specific user data from local storage on logout to prevent other users from seeing it
+      const keysToRemove = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && (
+            key.startsWith('bookmarks_') ||
+            key.endsWith('_program_progress') ||
+            key === 'watchLaterNews' ||
+            key === 'savedProblems' ||
+            key.startsWith('userSettings_') ||
+            key === 'appData_lastUpdated'
+        )) {
+            keysToRemove.push(key);
+        }
+      }
+      keysToRemove.forEach(k => {
+          // Avoid triggering sync logic on logout:
+          const originalSetItem = Object.getPrototypeOf(localStorage).removeItem;
+          originalSetItem.call(localStorage, k);
+      });
     } finally {
       setIsAuthenticated(false);
       setUser(null);
