@@ -1,7 +1,6 @@
 /**
  * @license
- * SPDX-License-Identifier: Apache-2.    0
- * 54545465654654654654654654654654654654654654654654654654654654654654654654
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import { useEffect } from 'react';
