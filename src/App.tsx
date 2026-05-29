@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route, Navigate, useNavigate, Outlet } from 'rea
 import { AuthProvider } from './contexts/AuthContext';
 import { SecureRoute } from './components/SecureRoute';
 import { Navbar } from './components/Navbar';
+import { PWABadge } from './components/PWABadge';
 import Home from './pages/Home';
 import HomeInfo from './pages/HomeInfo';
 import CourseInfo from './pages/CourseInfo';
@@ -26,6 +27,7 @@ import HtmlCssProgram from './pages/HtmlCssProgram';
 import DsaProgram from './pages/DsaProgram';
 import DbmsProgram from './pages/DbmsProgram';
 import WebDevProgram from './pages/WebDevProgram';
+import Contact from './pages/Contact';
 
 function RouteWrapper({ Component }: { Component: import('react').ElementType }) {
   const navigate = useNavigate();
@@ -39,6 +41,7 @@ function Layout() {
       <div className="flex-1 flex flex-col pt-0">
         <Outlet />
       </div>
+      <PWABadge />
     </>
   );
 }
@@ -78,6 +81,7 @@ export default function App() {
               <Route path="/products" element={<SecureRoute><RouteWrapper Component={Products} /></SecureRoute>} />
               <Route path="/resources" element={<SecureRoute><RouteWrapper Component={Resources} /></SecureRoute>} />
               <Route path="/pricing" element={<RouteWrapper Component={Pricing} />} />
+              <Route path="/contact" element={<RouteWrapper Component={Contact} />} />
               <Route path="/pdfs" element={<SecureRoute><RouteWrapper Component={MyPDFs} /></SecureRoute>} />
               <Route path="/bookmarks" element={<SecureRoute><RouteWrapper Component={Bookmarks} /></SecureRoute>} />
               <Route path="/settings" element={<SecureRoute><RouteWrapper Component={Settings} /></SecureRoute>} />

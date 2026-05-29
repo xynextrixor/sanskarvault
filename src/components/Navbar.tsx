@@ -53,6 +53,12 @@ export function Navbar() {
         
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-10 font-sans text-[13px] uppercase tracking-widest font-medium">
+          <span onClick={() => onNavigate('contact')} className={cn(
+            "relative cursor-pointer opacity-80 hover:opacity-100 transition-all py-2 after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:origin-left",
+            scrolled 
+              ? "text-white hover:text-white after:bg-white opacity-100 dark:text-primary dark:hover:text-primary dark:after:bg-primary" 
+              : "text-primary hover:text-primary/80 after:bg-primary opacity-100 dark:text-on-surface-variant dark:hover:text-primary dark:after:bg-primary"
+          )}>Contact</span>
           <span onClick={() => onNavigate('explore')} className={cn(
             "relative cursor-pointer opacity-80 hover:opacity-100 transition-all py-2 after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:origin-left",
             scrolled 
@@ -133,6 +139,12 @@ export function Navbar() {
             : "bg-white/95 text-primary border-primary/10 dark:bg-background/95 dark:text-on-surface dark:border-outline-variant/30"
         )}>
           <div className="flex flex-col px-6 py-4">
+             <span onClick={() => onNavigate('contact')} className={cn(
+               "py-4 border-b font-sans text-sm uppercase tracking-widest font-medium cursor-pointer",
+               scrolled
+                 ? "border-white/10 dark:border-primary/10"
+                 : "border-primary/10 dark:border-outline-variant/20"
+             )}>Contact</span>
              <span onClick={() => onNavigate('explore')} className={cn(
                "py-4 border-b font-sans text-sm uppercase tracking-widest font-medium cursor-pointer",
                scrolled

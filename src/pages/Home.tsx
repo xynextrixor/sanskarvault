@@ -181,7 +181,7 @@ export default function Home({ onNavigate }: HomeProps) {
         <section id="vault-sections" className="w-full max-w-7xl mx-auto px-6 py-24 border-t border-outline-variant/30">
           <div className="text-center mb-16">
             <h2 className="font-display font-bold text-4xl text-on-surface mb-4">Intelligent Academic Tools</h2>
-            <p className="text-on-surface-variant max-w-2xl mx-auto">Bento grid cards with trim unified, elaignant academic icons.</p>
+            <p className="text-on-surface-variant max-w-2xl mx-auto">Discover our comprehensive suite of intelligent academic tools designed to elevate your study experience.</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -191,7 +191,7 @@ export default function Home({ onNavigate }: HomeProps) {
                 <Search className="w-6 h-6 text-on-surface" />
               </div>
               <h3 className="font-bold text-xl mb-3 text-on-surface">AI Paper Analysis</h3>
-              <p className="text-sm text-on-surface-variant leading-relaxed">Paper analysis results astmetion concur analysiss of AI Paper analysis.</p>
+              <p className="text-sm text-on-surface-variant leading-relaxed">Instantly analyze previous year papers to identify key topics and recurring patterns.</p>
             </div>
             
             {/* Tool Card 2 */}
@@ -200,7 +200,7 @@ export default function Home({ onNavigate }: HomeProps) {
                 <FileText className="w-6 h-6 text-on-surface" />
               </div>
               <h3 className="font-bold text-xl mb-3 text-on-surface">Important Questions</h3>
-              <p className="text-sm text-on-surface-variant leading-relaxed">Genaerate questions to asssess quesciont corretzers important questions.</p>
+              <p className="text-sm text-on-surface-variant leading-relaxed">Generate high-probability question banks to focus your preparation.</p>
             </div>
             
             {/* Tool Card 3 */}
@@ -209,7 +209,7 @@ export default function Home({ onNavigate }: HomeProps) {
                 <BookOpen className="w-6 h-6 text-on-surface" />
               </div>
               <h3 className="font-bold text-xl mb-3 text-on-surface">Generate Notes</h3>
-              <p className="text-sm text-on-surface-variant leading-relaxed">Genaerate notes and hn corerosng oarrant incotment claiss cptions generate notes.</p>
+              <p className="text-sm text-on-surface-variant leading-relaxed">Automatically generate concise, high-quality notes from your study materials.</p>
             </div>
             
             {/* Tool Card 4 */}
@@ -218,7 +218,7 @@ export default function Home({ onNavigate }: HomeProps) {
                 <Calendar className="w-6 h-6 text-on-surface" />
               </div>
               <h3 className="font-bold text-xl mb-3 text-on-surface">Study Planner</h3>
-              <p className="text-sm text-on-surface-variant leading-relaxed">Study plome a study planner commete study plannning enewbelass and oday tormor.</p>
+              <p className="text-sm text-on-surface-variant leading-relaxed">Create personalized study schedules to optimize your learning process.</p>
             </div>
             
              {/* Tool Card 5 */}
@@ -226,8 +226,8 @@ export default function Home({ onNavigate }: HomeProps) {
               <div className="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Layers className="w-6 h-6 text-on-surface" />
               </div>
-              <h3 className="font-bold text-xl mb-3 text-on-surface">Study Matter</h3>
-              <p className="text-sm text-on-surface-variant leading-relaxed">Turn conrsne rcaus for the queshos.</p>
+              <h3 className="font-bold text-xl mb-3 text-on-surface">Study Material</h3>
+              <p className="text-sm text-on-surface-variant leading-relaxed">Access curated study materials and comprehensive resources.</p>
             </div>
             
              {/* Tool Card 6 */}
@@ -235,8 +235,8 @@ export default function Home({ onNavigate }: HomeProps) {
               <div className="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Clock className="w-6 h-6 text-on-surface" />
               </div>
-              <h3 className="font-bold text-xl mb-3 text-on-surface">AI Semester</h3>
-              <p className="text-sm text-on-surface-variant leading-relaxed">Rovise the containes nursce cuennmbes.</p>
+              <h3 className="font-bold text-xl mb-3 text-on-surface">AI Semester Plan</h3>
+              <p className="text-sm text-on-surface-variant leading-relaxed">Plan your entire semester with AI-driven insights and course tracking.</p>
             </div>
             
              {/* Tool Card 7 */}
@@ -244,8 +244,8 @@ export default function Home({ onNavigate }: HomeProps) {
               <div className="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <BarChart3 className="w-6 h-6 text-on-surface" />
               </div>
-              <h3 className="font-bold text-xl mb-3 text-on-surface">Procaosa Evense</h3>
-              <p className="text-sm text-on-surface-variant leading-relaxed">Gecenhe ongsorooce n aouinand cyuobines sations.</p>
+              <h3 className="font-bold text-xl mb-3 text-on-surface">Progress Tracking</h3>
+              <p className="text-sm text-on-surface-variant leading-relaxed">Monitor your academic progress with intuitive visual dashboards.</p>
             </div>
             
              {/* Tool Card 8 */}
@@ -253,8 +253,8 @@ export default function Home({ onNavigate }: HomeProps) {
               <div className="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Search className="w-6 h-6 text-on-surface" />
               </div>
-              <h3 className="font-bold text-xl mb-3 text-on-surface">Stoatic Fincher</h3>
-              <p className="text-sm text-on-surface-variant leading-relaxed">Cesoociongrunere nesrouce olom camos.</p>
+              <h3 className="font-bold text-xl mb-3 text-on-surface">Smart Search</h3>
+              <p className="text-sm text-on-surface-variant leading-relaxed">Quickly find specific topics, notes, or papers with intelligent search.</p>
             </div>
           </div>
           

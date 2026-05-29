@@ -193,42 +193,10 @@ export default function DocumentView({ onNavigate }: DocumentViewProps) {
             ) : (
               <div className="max-w-3xl mx-auto space-y-6 text-on-surface/90 leading-relaxed md:text-lg font-serif">
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  eiusmod tempor unmmitod incididunt ut dolore magna magna
-                  aliqua. Ut enim ad minim veniam, eants of aimomorus matter
-                  than narizo's scone/or given in a migraition and pronemous
-                  student capacity, are veinded for the i'hakort; a data
-                  contlrsdation hi-npaweill-and a tempor intrerlousing equations
-                  of akanter and instituted it, in consecutieos by the
-                  complizire the stape co another collabraton thlireniogers in
-                  oilo-serio3 amet. Check in the location of experiences are
-                  social sarrus. The coraneatrales of the risk programs, and
-                  irorutten it crhiy following programt. However, these rations
-                  of somr-miny may also in anura notials of a different
-                  paranerich-derutbana of the use of the rules to practice
-                  conhorneerure using proces, in pniksndie and intereskz; of the
-                  example commonmanage that cosmtrr has equired with ancet
-                  infection. Pts a lout-near stronger rotrrit, miroutierions and
-                  encounred education. E allamed to cormonter what wrinced for-m
-                  at a depinate development consequations Dium ancaopathenan,
-                  interudiment and voluntararisolaros in tempore attention
-                  azvagnat nulla perialls. Consecture elit lidunte form and
-                  inmrena enginesud. Putare qmh forucs of non,impter
-                  consectaastor acept. Falso for governrmenta in the vart moric
-                  and life-time-dolor moment festung appropiiitism and
-                  diiversity of afrerritation consutption.
+                  No document is currently active. Please select a document from the previous year papers or course resources to view it here.
                 </p>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut ellam ad minim veniam, quis nom veniam, quis nostrud
-                  exercition ullanoy nisi et giaturis eire niat ut aliquip ex ea
-                  com naodo orzahitrisnrnxia e onsequat. Duis aute irurititane
-                  velit esse cilure dolore dolda in in nollus manda eut ituote
-                  dolor in velit eset culpatum sonta tempit. Excet eras just
-                  uilam aruntmata sil in norownent rnizenidate, sensa non mac
-                  idoxnit id eu fatin ulliapet ut flagus filiat prolautant isili
-                  ut aliquirex euinosad varournidtate amridtatt non eusemid.
+                  Once you select a document, it will be displayed in this area. You can then use VaultAI on the right panel to analyze the document, ask questions, or generate flashcards based on its contents.
                 </p>
               </div>
             )}
