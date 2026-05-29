@@ -58,37 +58,48 @@ export default function Settings({ onNavigate }: SettingsProps) {
     // Check initial dark mode state
     setIsDarkMode(document.documentElement.classList.contains('dark'));
     
-    if (user) {
-      setDisplayName(user.email?.split('@')[0] || '');
-      // Load saved preferences if any from localStorage (simulating db)
-      const savedSettings = localStorage.getItem('userSettings_' + user.id);
-      if (savedSettings) {
-        try {
-          const parsed = JSON.parse(savedSettings);
-          if (parsed.displayName) setDisplayName(parsed.displayName);
-          setCollegeName(parsed.collegeName || '');
-          setCourse(parsed.course || '');
-          setSemester(parsed.semester || '');
-          setAvatarPreview(parsed.avatar || null);
-          
-          setRollNumber(parsed.rollNumber || '');
-          setSpecialization(parsed.specialization || '');
-          setGraduationYear(parsed.graduationYear || '');
-          setStudyMode(parsed.studyMode || 'Individual Study');
-          setLearningGoal(parsed.learningGoal || 'Skill Building');
-          
-          setEmailNotifications(parsed.emailNotifications !== undefined ? parsed.emailNotifications : true);
-          setWeeklyDigest(parsed.weeklyDigest !== undefined ? parsed.weeklyDigest : true);
-          setSoundEffects(parsed.soundEffects !== undefined ? parsed.soundEffects : true);
-          setOfflineCaching(parsed.offlineCaching !== undefined ? parsed.offlineCaching : false);
-          setAutoplayPdf(parsed.autoplayPdf !== undefined ? parsed.autoplayPdf : false);
-          setAiCompanionTone(parsed.aiCompanionTone || 'Intelligent Mentor');
-          setStudyReminderTime(parsed.studyReminderTime || '20:00');
-        } catch (e) {
-          console.error(e);
+    const loadSettings = () => {
+      if (user) {
+        setDisplayName(user.email?.split('@')[0] || '');
+        // Load saved preferences if any from localStorage (simulating db)
+        const savedSettings = localStorage.getItem('userSettings_' + user.id);
+        if (savedSettings) {
+          try {
+            const parsed = JSON.parse(savedSettings);
+            if (parsed.displayName) setDisplayName(parsed.displayName);
+            setCollegeName(parsed.collegeName || '');
+            setCourse(parsed.course || '');
+            setSemester(parsed.semester || '');
+            setAvatarPreview(parsed.avatar || null);
+            
+            setRollNumber(parsed.rollNumber || '');
+            setSpecialization(parsed.specialization || '');
+            setGraduationYear(parsed.graduationYear || '');
+            setStudyMode(parsed.studyMode || 'Individual Study');
+            setLearningGoal(parsed.learningGoal || 'Skill Building');
+            
+            setEmailNotifications(parsed.emailNotifications !== undefined ? parsed.emailNotifications : true);
+            setWeeklyDigest(parsed.weeklyDigest !== undefined ? parsed.weeklyDigest : true);
+            setSoundEffects(parsed.soundEffects !== undefined ? parsed.soundEffects : true);
+            setOfflineCaching(parsed.offlineCaching !== undefined ? parsed.offlineCaching : false);
+            setAutoplayPdf(parsed.autoplayPdf !== undefined ? parsed.autoplayPdf : false);
+            setAiCompanionTone(parsed.aiCompanionTone || 'Intelligent Mentor');
+            setStudyReminderTime(parsed.studyReminderTime || '20:00');
+          } catch (e) {
+            console.error(e);
+          }
         }
       }
-    }
+    };
+    
+    loadSettings();
+
+    // Re-load settings when sync pushes from Supabase to local storage
+    window.addEventListener('storage', loadSettings);
+
+    return () => {
+      window.removeEventListener('storage', loadSettings);
+    };
   }, [user]);
 
   const handleLogout = async () => {

@@ -31,8 +31,8 @@ export function initSync() {
 }
 
 async function pushToSupabase() {
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session?.user) return;
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return;
 
   const appData: Record<string, string> = {};
   for (let i = 0; i < localStorage.length; i++) {
@@ -53,10 +53,30 @@ async function pushToSupabase() {
   }
 
   try {
-    await supabase.auth.updateUser({
+    const { error } = await supabase.auth.updateUser({
       data: { appData }
     });
-    console.log('Synced local data to remote profile.');
+    
+    if (error) {
+       console.error('Supabase updateUser error:', error);
+       // If size exceeded, we might want to try removing images from userSettings
+       if (error.status === 413 || error.message.includes('too large')) {
+           for (const key of Object.keys(appData)) {
+               if (key.startsWith('userSettings_')) {
+                   try {
+                       const settings = JSON.parse(appData[key]);
+                       if (settings.avatar) {
+                           settings.avatar = null; // strip avatar
+                           appData[key] = JSON.stringify(settings);
+                       }
+                   } catch (e) {}
+               }
+           }
+           await supabase.auth.updateUser({ data: { appData } });
+       }
+    } else {
+       console.log('Synced local data to remote profile.');
+    }
   }  catch (e) {
     console.error('Failed to sync to remote', e);
   }
@@ -64,15 +84,17 @@ async function pushToSupabase() {
 
 export async function pullFromSupabase() {
   try {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session?.user) return false;
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return false;
 
-    const remoteData = session.user.user_metadata?.appData || {};
+    const remoteData = user.user_metadata?.appData || {};
     const remoteLastUpdated = parseInt(remoteData['appData_lastUpdated'] || '0', 10);
     const localLastUpdated = parseInt(localStorage.getItem('appData_lastUpdated') || '0', 10);
 
-    if (remoteLastUpdated > localLastUpdated) {
-      console.log('Remote data is newer, pulling to local storage.');
+    const hasRemoteKeys = Object.keys(remoteData).length > 0;
+
+    if (remoteLastUpdated > localLastUpdated || (localLastUpdated === 0 && hasRemoteKeys)) {
+      console.log('Remote data is newer or local is empty, pulling to local storage.');
       
       const originalSetItem = Object.getPrototypeOf(localStorage).setItem;
       

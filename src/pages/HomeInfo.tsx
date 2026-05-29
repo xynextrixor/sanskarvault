@@ -342,9 +342,27 @@ export default function HomeInfo({ onNavigate }: HomeInfoProps) {
               </div>
 
               {loading ? (
-                <div className="flex justify-center items-center py-20 text-on-surface-variant">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mr-3"></div>
-                  Loading news...
+                <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <div key={i} className="bg-surface-container border border-outline-variant/30 rounded-2xl overflow-hidden shadow-sm flex flex-col h-full animate-pulse">
+                      <div className="aspect-video bg-surface-container-high w-full" />
+                      <div className="p-3 md:p-6 flex-1 flex flex-col">
+                        <div className="flex items-center justify-between mb-2 md:mb-3">
+                           <div className="h-4 w-24 bg-surface-container-highest rounded" />
+                           <div className="h-6 w-6 rounded-full bg-surface-container-highest" />
+                        </div>
+                        <div className="h-5 md:h-6 w-full bg-surface-container-highest rounded mb-2 md:mb-3" />
+                        <div className="h-5 md:h-6 w-3/4 bg-surface-container-highest rounded mb-4" />
+                        
+                        <div className="h-4 md:h-4 w-full bg-surface-container-highest rounded mb-2" />
+                        <div className="h-4 md:h-4 w-5/6 bg-surface-container-highest rounded mb-4" />
+                        
+                        <div className="mt-auto pt-3 md:pt-4 border-t border-outline-variant/30">
+                          <div className="h-4 md:h-5 w-32 bg-surface-container-highest rounded" />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               ) : displayedNews.length === 0 ? (
                 <div className="bg-surface-container border border-outline-variant/30 rounded-2xl p-10 text-center max-w-lg mx-auto my-12 shadow-sm">
@@ -373,6 +391,8 @@ export default function HomeInfo({ onNavigate }: HomeInfoProps) {
                             <img 
                               src={article.urlToImage} 
                               alt={article.title}
+                              loading="lazy"
+                              decoding="async"
                               className="w-full h-full object-cover"
                               onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                             />

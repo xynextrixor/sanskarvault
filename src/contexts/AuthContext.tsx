@@ -39,9 +39,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     checkAuth();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
+      async (_event, session) => {
         setIsAuthenticated(!!session);
         setUser(session?.user ?? null);
+        if (_event === 'SIGNED_IN' && session?.user) {
+          const pulled = await pullFromSupabase();
+          if (pulled) window.dispatchEvent(new Event('storage'));
+        }
       }
     );
 
@@ -64,7 +68,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       throw new Error(error.message);
     }
     
-    await pullFromSupabase();
+    const pulled = await pullFromSupabase();
+    if (pulled) window.dispatchEvent(new Event('storage'));
   };
 
   const logout = async () => {
