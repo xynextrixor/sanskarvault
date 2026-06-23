@@ -1,0 +1,72 @@
+================================================================================
+SANSKARVAULT - TECHNICAL SPECIFICATION & ARCHITECTURE OVERVIEW
+================================================================================
+
+1. SYSTEM OVERVIEW
+--------------------------------------------------------------------------------
+This document outlines the architectural blueprint of a modern, highly scalable 
+educational resource platform. The system is designed to seamlessly deliver 
+academic materials (Previous Year Papers, AI Notes, Coding Resources) while 
+maintaining a robust offline-capable, local-first user experience. 
+
+The core philosophy of this architecture is to provide an instantaneous UI response 
+using local storage, actively synchronized behind the scenes with a secure cloud 
+backend. This ensures maximum performance and cross-device continuity without 
+exposing the proprietary content delivery algorithms.
+
+2. TECHNOLOGY STACK
+--------------------------------------------------------------------------------
+- Frontend Framework: React 18 with TypeScript 
+- Build Tool & Bundler: Vite (Optimized for fast HMR and optimized production builds)
+- Styling Engine: Tailwind CSS (Utility-first, responsive, dark/light mode enabled)
+- Backend & Authentication: Supabase (PostgreSQL, Go-based Auth)
+- Routing: React Router DOM v6
+- PWA Integration: vite-plugin-pwa (Service workers, caching)
+- Icons: Lucide-React
+
+3. CORE ARCHITECTURAL PATTERNS
+--------------------------------------------------------------------------------
+A. Authentication & Route Protection
+   - Implemented via a central `AuthContext`.
+   - Uses a `SecureRoute` wrapper to guard private application states.
+   - Authentication relies on secure JWT tokens managed by Supabase, preventing 
+     unauthorized access to core platform features.
+
+B. Local-First Synchronization Engine (The "Vault" Mechanism)
+   - To minimize database reads and maximize speed, the system heavily utilizes 
+     the browser's `localStorage` as the primary state container.
+   - A custom `initSync()` service intercepts `localStorage.setItem` commands.
+   - User states, settings, bookmarks, and course progress are tracked locally and 
+     batched/pushed to Supabase `user_metadata` asynchronously.
+   - On cross-device login, `pullFromSupabase()` intelligently merges remote data 
+     into the local environment.
+
+C. Lazy Loading & Code Splitting
+   - The application route footprint is optimized using React `lazy` and `Suspense`.
+   - Modules (e.g., Programming courses, generic pages) are chunked dynamically. 
+   - This keeps the initial JavaScript bundle microscopic, protecting the full source 
+     tree from being downloaded instantly by unauthenticated visitors.
+
+4. PERFORMANCE & SEO OPTIMIZATIONS
+--------------------------------------------------------------------------------
+- Progressive Web App (PWA): Capable of standalone installation on mobile devices.
+- Asset Optimization: Images utilize `loading="lazy"` and `decoding="async"`.
+- Resiliency: A top-level `ErrorBoundary` catches unexpected render failures, 
+  keeping the application state stable without crashing the user's view.
+- SEO & Meta Layer: Optimized with OpenGraph (OG) and Twitter Card tags. 
+  `sitemap.xml` and `robots.txt` carefully instruct web crawlers precisely which 
+  pages to index, protecting private dynamic routes.
+
+5. DATA & SECURITY MODEL
+--------------------------------------------------------------------------------
+- Content parsing and dynamic data fetching are executed via heavily abstracted 
+  patterns (e.g., external API integrations for daily coding challenges).
+- User identifiers and settings are securely bounded to the Supabase authenticated 
+  entity. Private data never escapes the `user_metadata` sandbox context.
+- The UI gracefully falls back to skeleton loaders (pulsing UI) when fetching data, 
+  maintaining the illusion of a continuous, fluid interface while network requests 
+  resolve.
+
+================================================================================
+END OF DOCUMENT
+================================================================================

@@ -24,18 +24,25 @@ export default function Login() {
     setError('');
     setSuccessMsg('');
     setLoading(true);
+
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('TIMEOUT_ERROR')), 15000)
+    );
     
     try {
       if (isSignUp) {
-        const { data, error } = await supabase.auth.signUp({ 
-          email, 
-          password,
-          options: {
-            data: {
-              full_name: name,
+        const { data, error } = await Promise.race([
+          supabase.auth.signUp({ 
+            email, 
+            password,
+            options: {
+              data: {
+                full_name: name,
+              }
             }
-          }
-        });
+          }),
+          timeoutPromise
+        ]) as { data: any, error: any };
         
         if (error) throw error;
         
@@ -45,13 +52,25 @@ export default function Login() {
           ]);
         }
         
-        setSuccessMsg('Verification link sent! Please check your email to complete registration.');
+        if (data.session) {
+          setSuccessMsg('Registration successful! Logging you in...');
+          navigate('/');
+        } else {
+          setSuccessMsg('Verification link sent! Check your inbox/spam folder. (If it does not arrive, go to Supabase Dashboard -> Auth -> Providers -> Email, and disable "Confirm email".)');
+        }
       } else {
-        await login(email, password);
+        await Promise.race([
+          login(email, password),
+          timeoutPromise
+        ]);
         navigate('/');
       }
     } catch (err: any) {
-      setError(err.message || 'Authentication failed');
+      if (err.message === 'TIMEOUT_ERROR') {
+        setError('Request timed out. If you recently entered dummy values in Supabase SMTP settings, the server is stuck trying to send an email. Please turn off "Confirm email" or fix the SMTP host to fix the login process.');
+      } else {
+        setError(err.message || 'Authentication failed');
+      }
     } finally {
       setLoading(false);
     }

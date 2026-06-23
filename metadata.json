@@ -1,6 +1,6 @@
 {
-  "name": "",
-  "description": "",
+  "name": "SanskarVault",
+  "description": "SanskarVault is a modern platform for previous year papers, AI-generated notes, coding resources, semester materials and smart exam preparation tools.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
