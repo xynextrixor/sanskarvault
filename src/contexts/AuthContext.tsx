@@ -21,12 +21,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
+        const timeoutPromise = new Promise<{ data: { session: Session | null }, error: null }>((resolve) => {
+          setTimeout(() => resolve({ data: { session: null }, error: null }), 4000)
+        });
+
+        const sessionTask = supabase.auth.getSession();
+        sessionTask.catch(() => {}); // prevent unhandled rejection map 
+
+        const result = await Promise.race([
+          sessionTask,
+          timeoutPromise
+        ]);
+
+        const session = result.data.session;
+        
         setIsAuthenticated(!!session);
         setUser(session?.user ?? null);
+
         if (session?.user) {
-           const pulled = await pullFromSupabase();
-           if (pulled) window.dispatchEvent(new Event('storage'));
+           // Run in background to prevent blocking the UI
+           pullFromSupabase().then(pulled => {
+             if (pulled) window.dispatchEvent(new Event('storage'));
+           }).catch(console.error);
         }
       } catch (error) {
         setIsAuthenticated(false);
@@ -43,8 +59,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setIsAuthenticated(!!session);
         setUser(session?.user ?? null);
         if (_event === 'SIGNED_IN' && session?.user) {
-          const pulled = await pullFromSupabase();
-          if (pulled) window.dispatchEvent(new Event('storage'));
+          pullFromSupabase().then(pulled => {
+            if (pulled) window.dispatchEvent(new Event('storage'));
+          }).catch(console.error);
         }
       }
     );
@@ -68,8 +85,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       throw new Error(error.message);
     }
     
-    const pulled = await pullFromSupabase();
-    if (pulled) window.dispatchEvent(new Event('storage'));
+    pullFromSupabase().then(pulled => {
+      if (pulled) window.dispatchEvent(new Event('storage'));
+    }).catch(console.error);
   };
 
   const logout = async () => {

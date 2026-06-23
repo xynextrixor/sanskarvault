@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useEffect, Suspense, lazy, Component as ReactComponent, ReactNode, ErrorInfo, useCallback } from 'react';
+import React, { useEffect, Suspense, lazy, ReactNode, ErrorInfo, useCallback } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useNavigate, Outlet } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { SecureRoute } from './components/SecureRoute';
@@ -31,7 +31,10 @@ const DbmsProgram = lazy(() => import('./pages/DbmsProgram'));
 const WebDevProgram = lazy(() => import('./pages/WebDevProgram'));
 const Contact = lazy(() => import('./pages/Contact'));
 
-class ErrorBoundary extends ReactComponent<{children: ReactNode}, {hasError: boolean}> {
+class ErrorBoundary extends React.Component<{children: ReactNode}, {hasError: boolean}> {
+  props: {children: ReactNode};
+  state: {hasError: boolean};
+
   constructor(props: {children: ReactNode}) {
     super(props);
     this.state = { hasError: false };

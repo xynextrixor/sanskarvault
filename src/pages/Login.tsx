@@ -25,22 +25,26 @@ export default function Login() {
     setSuccessMsg('');
     setLoading(true);
 
-    const timeoutPromise = new Promise((_, reject) => 
-      setTimeout(() => reject(new Error('TIMEOUT_ERROR')), 15000)
-    );
+    let timeoutId: any;
+    const timeoutPromise = new Promise((_, reject) => {
+      timeoutId = setTimeout(() => reject(new Error('TIMEOUT_ERROR')), 8000);
+    });
     
     try {
       if (isSignUp) {
-        const { data, error } = await Promise.race([
-          supabase.auth.signUp({ 
-            email, 
-            password,
-            options: {
-              data: {
-                full_name: name,
-              }
+        const authTask = supabase.auth.signUp({ 
+          email, 
+          password,
+          options: {
+            data: {
+              full_name: name,
             }
-          }),
+          }
+        });
+        authTask.catch(() => {}); // prevent unhandled rejection later
+
+        const { data, error } = await Promise.race([
+          authTask,
           timeoutPromise
         ]) as { data: any, error: any };
         
@@ -59,8 +63,11 @@ export default function Login() {
           setSuccessMsg('Verification link sent! Check your inbox/spam folder. (If it does not arrive, go to Supabase Dashboard -> Auth -> Providers -> Email, and disable "Confirm email".)');
         }
       } else {
+        const loginTask = login(email, password);
+        loginTask.catch(() => {}); // prevent unhandled rejection
+
         await Promise.race([
-          login(email, password),
+          loginTask,
           timeoutPromise
         ]);
         navigate('/');
@@ -72,6 +79,7 @@ export default function Login() {
         setError(err.message || 'Authentication failed');
       }
     } finally {
+      clearTimeout(timeoutId);
       setLoading(false);
     }
   };
